@@ -48,7 +48,19 @@ function displayTemperature(response) {
   imgIcon.setAttribute("alt", response.data.weather[0].description);
 }
 
-let apiKey = "616b6d14eb70524f242eb75242106f0a";
-let city = "Sumy";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
-axios.get(apiUrl).then(displayTemperature);
+function search(city) {
+  let apiKey = "616b6d14eb70524f242eb75242106f0a";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayTemperature);
+}
+
+function handleSubmit(event) {
+  event.preventDefault();
+  let city = document.querySelector("#city-input").value;
+  search(city);
+}
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
+
+search("Sumy");
