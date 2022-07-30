@@ -1,3 +1,31 @@
+function formatDate(timestamp) {
+  let date = new Date(timestamp);
+
+  let weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let day = weekdays[date.getDay()];
+  let hour = date.getHours();
+
+  if (hour < 10) {
+    hour = "0" + hour;
+  }
+
+  let minutes = date.getMinutes();
+
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
+
+  return `${day} ${hour}:${minutes}`;
+}
+
 function displayTemperature(response) {
   let city = document.querySelector("#city");
   city.innerHTML = response.data.name;
@@ -9,8 +37,12 @@ function displayTemperature(response) {
   humidity.innerHTML = response.data.main.humidity;
   let wind = document.querySelector("#wind");
   wind.innerHTML = Math.round(response.data.wind.speed);
+  let currentDate = document.querySelector("#current-date");
+  currentDate.innerHTML = formatDate(response.data.dt * 1000);
+  console.log(response.data.dt);
 }
 
 let apiKey = "616b6d14eb70524f242eb75242106f0a";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Sumy&appid=${apiKey}&units=metric`;
+let city = "Sumy";
+let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
 axios.get(apiUrl).then(displayTemperature);
