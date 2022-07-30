@@ -1,6 +1,4 @@
 function formatDate(timestamp) {
-  let date = new Date(timestamp);
-
   let weekdays = [
     "Sunday",
     "Monday",
@@ -10,14 +8,15 @@ function formatDate(timestamp) {
     "Friday",
     "Saturday",
   ];
+
+  let date = new Date(timestamp);
   let day = weekdays[date.getDay()];
   let hour = date.getHours();
+  let minutes = date.getMinutes();
 
   if (hour < 10) {
     hour = "0" + hour;
   }
-
-  let minutes = date.getMinutes();
 
   if (minutes < 10) {
     minutes = "0" + minutes;
@@ -28,24 +27,27 @@ function formatDate(timestamp) {
 
 function displayTemperature(response) {
   let city = document.querySelector("#city");
-  city.innerHTML = response.data.name;
-  let temp = document.querySelector("#main-temperature");
-  temp.innerHTML = Math.round(response.data.main.temp);
   let description = document.querySelector("#weather-description");
-  description.innerHTML = response.data.weather[0].description;
   let humidity = document.querySelector("#humidity");
-  humidity.innerHTML = response.data.main.humidity;
   let wind = document.querySelector("#wind");
-  wind.innerHTML = Math.round(response.data.wind.speed);
   let currentDate = document.querySelector("#current-date");
-  currentDate.innerHTML = formatDate(response.data.dt * 1000);
   let icon = response.data.weather[0].icon;
   let imgIcon = document.querySelector("#main-icon");
+
+  city.innerHTML = response.data.name;
+  htmlMainTemperature.innerHTML = Math.round(response.data.main.temp);
+  celciusTemperature = response.data.main.temp;
+  description.innerHTML = response.data.weather[0].description;
+  humidity.innerHTML = response.data.main.humidity;
+  wind.innerHTML = Math.round(response.data.wind.speed);
+  currentDate.innerHTML = formatDate(response.data.dt * 1000);
   imgIcon.setAttribute(
     "src",
     `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
   imgIcon.setAttribute("alt", response.data.weather[0].description);
+  celciusLink.setAttribute("class", "active");
+  fahrenheitLink.removeAttribute("class");
 }
 
 function search(city) {
@@ -60,7 +62,31 @@ function handleSubmit(event) {
   search(city);
 }
 
+function convertToFahrenheit(event) {
+  event.preventDefault();
+  let result = Math.round(celciusTemperature * 1.8 + 32);
+  htmlMainTemperature.innerHTML = result;
+  celciusLink.classList.remove("active");
+  fahrenheitLink.classList.add("active");
+}
+
+function convertToCelcius(event) {
+  event.preventDefault();
+  htmlMainTemperature.innerHTML = Math.round(celciusTemperature);
+  celciusLink.setAttribute("class", "active");
+  fahrenheitLink.removeAttribute("class");
+}
+
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
+
+let celciusTemperature = null;
+let htmlMainTemperature = document.querySelector("#main-temperature");
+
+let fahrenheitLink = document.querySelector("#fahrenheit-link");
+fahrenheitLink.addEventListener("click", convertToFahrenheit);
+
+let celciusLink = document.querySelector("#celcius-link");
+celciusLink.addEventListener("click", convertToCelcius);
 
 search("Sumy");
