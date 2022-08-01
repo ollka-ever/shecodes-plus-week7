@@ -77,6 +77,55 @@ function convertToCelcius(event) {
   fahrenheitLink.removeAttribute("class");
 }
 
+function showForecast() {
+  let forecast = document.querySelector("#forecast");
+  let forecastHTML = `<div class="row">`;
+  let days = ["Mon", "Tue", "Wed"];
+  days.forEach(function (day) {
+    forecastHTML += `<div class="col-2">
+    <div class="forecast-day">${day}</div>
+    <img
+      src="https://openweathermap.org/img/wn/02d@2x.png"
+      alt=""
+      width="36"
+    />
+    <div class="forecast-temperature">
+      <span class="forecast-temerature-day">28°</span>
+      <span class="forecast-temerature-night">18°</span>
+    </div>
+</div>`;
+  });
+
+  //   forecastHTML += `<div class="col-2">
+  //     <div class="forecast-day">Thu</div>
+  //     <img
+  //       src="https://openweathermap.org/img/wn/02d@2x.png"
+  //       alt=""
+  //       width="36"
+  //     />
+  //     <div class="forecast-temperature">
+  //       <span class="forecast-temerature-day">28°</span>
+  //       <span class="forecast-temerature-night">18°</span>
+  //     </div>
+  // </div>`;
+
+  //   forecastHTML += `<div class="col-2">
+  //     <div class="forecast-day">Thu</div>
+  //     <img
+  //       src="https://openweathermap.org/img/wn/02d@2x.png"
+  //       alt=""
+  //       width="36"
+  //     />
+  //     <div class="forecast-temperature">
+  //       <span class="forecast-temerature-day">28°</span>
+  //       <span class="forecast-temerature-night">18°</span>
+  //     </div>
+  // </div>`;
+
+  forecastHTML += `<\div>`;
+  forecast.innerHTML = forecastHTML;
+}
+
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
 
@@ -90,3 +139,4 @@ let celciusLink = document.querySelector("#celcius-link");
 celciusLink.addEventListener("click", convertToCelcius);
 
 search("Sumy");
+showForecast();
