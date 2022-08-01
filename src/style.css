@@ -65,6 +65,28 @@ li {
   top: -34px;
 }
 
+.weather-forecast {
+  margin-top: 20px;
+  text-align: center;
+  color: #000;
+}
+
+.forecast-day {
+  font-size: 16px;
+  opacity: 0.5;
+}
+
+.forecast-temperature {
+  font-size: 13px;
+}
+
+.forecast-temerature-day {
+}
+
+.forecast-temerature-night {
+  opacity: 0.5;
+}
+
 #weather-description:first-letter {
   text-transform: uppercase;
 }
