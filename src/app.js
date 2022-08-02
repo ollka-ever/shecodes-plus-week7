@@ -78,26 +78,39 @@ function convertToCelcius(event) {
   fahrenheitLink.removeAttribute("class");
 }
 
+function dtToDay(dt) {
+  let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return weekDays[new Date(dt * 1000).getDay()];
+}
+
 function showForecast(response) {
   console.log(response.data.daily);
+  let dailyForecast = response.data.daily;
 
   let forecast = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
   let days = ["Mon", "Tue", "Wed"];
-  days.forEach(function (day) {
+
+  for (let i = 0; i < 6; i++) {
+    let day = dailyForecast[i];
+    let icon = day.weather[0].icon;
+    let dayTemp = Math.round(day.temp.day);
+    let nightTemp = Math.round(day.temp.night);
+    let weekDay = dtToDay(day.dt);
+
     forecastHTML += `<div class="col-2">
-    <div class="forecast-day">${day}</div>
-    <img
-      src="https://openweathermap.org/img/wn/02d@2x.png"
-      alt=""
-      width="36"
-    />
-    <div class="forecast-temperature">
-      <span class="forecast-temerature-day">28°</span>
-      <span class="forecast-temerature-night">18°</span>
-    </div>
+  <div class="forecast-day">${weekDay}</div>
+  <img
+    src="https://openweathermap.org/img/wn/${icon}@2x.png"
+    alt=""
+    width="36"
+  />
+  <div class="forecast-temperature">
+    <span class="forecast-temerature-day">${dayTemp}°</span>
+    <span class="forecast-temerature-night">${nightTemp}°</span>
+  </div>
 </div>`;
-  });
+  }
 
   forecastHTML += `<\div>`;
   forecast.innerHTML = forecastHTML;
