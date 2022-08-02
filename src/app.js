@@ -46,8 +46,6 @@ function displayTemperature(response) {
     `https://openweathermap.org/img/wn/${icon}@2x.png`
   );
   imgIcon.setAttribute("alt", response.data.weather[0].description);
-  celciusLink.setAttribute("class", "active");
-  fahrenheitLink.removeAttribute("class");
   getForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
@@ -63,33 +61,15 @@ function handleSubmit(event) {
   search(city);
 }
 
-function convertToFahrenheit(event) {
-  event.preventDefault();
-  let result = Math.round(celciusTemperature * 1.8 + 32);
-  htmlMainTemperature.innerHTML = result;
-  celciusLink.classList.remove("active");
-  fahrenheitLink.classList.add("active");
-}
-
-function convertToCelcius(event) {
-  event.preventDefault();
-  htmlMainTemperature.innerHTML = Math.round(celciusTemperature);
-  celciusLink.setAttribute("class", "active");
-  fahrenheitLink.removeAttribute("class");
-}
-
 function dtToDay(dt) {
   let weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   return weekDays[new Date(dt * 1000).getDay()];
 }
 
 function showForecast(response) {
-  console.log(response.data.daily);
   let dailyForecast = response.data.daily;
-
   let forecast = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
-  let days = ["Mon", "Tue", "Wed"];
 
   for (let i = 0; i < 6; i++) {
     let day = dailyForecast[i];
@@ -125,13 +105,6 @@ function getForecast(lat, lon) {
 let form = document.querySelector("#search-form");
 form.addEventListener("submit", handleSubmit);
 
-let celciusTemperature = null;
 let htmlMainTemperature = document.querySelector("#main-temperature");
-
-let fahrenheitLink = document.querySelector("#fahrenheit-link");
-fahrenheitLink.addEventListener("click", convertToFahrenheit);
-
-let celciusLink = document.querySelector("#celcius-link");
-celciusLink.addEventListener("click", convertToCelcius);
 
 search("Sumy");
