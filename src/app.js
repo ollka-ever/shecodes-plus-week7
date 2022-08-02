@@ -48,6 +48,7 @@ function displayTemperature(response) {
   imgIcon.setAttribute("alt", response.data.weather[0].description);
   celciusLink.setAttribute("class", "active");
   fahrenheitLink.removeAttribute("class");
+  getForecast(response.data.coord.lat, response.data.coord.lon);
 }
 
 function search(city) {
@@ -77,7 +78,9 @@ function convertToCelcius(event) {
   fahrenheitLink.removeAttribute("class");
 }
 
-function showForecast() {
+function showForecast(response) {
+  console.log(response.data.daily);
+
   let forecast = document.querySelector("#forecast");
   let forecastHTML = `<div class="row">`;
   let days = ["Mon", "Tue", "Wed"];
@@ -96,34 +99,14 @@ function showForecast() {
 </div>`;
   });
 
-  //   forecastHTML += `<div class="col-2">
-  //     <div class="forecast-day">Thu</div>
-  //     <img
-  //       src="https://openweathermap.org/img/wn/02d@2x.png"
-  //       alt=""
-  //       width="36"
-  //     />
-  //     <div class="forecast-temperature">
-  //       <span class="forecast-temerature-day">28°</span>
-  //       <span class="forecast-temerature-night">18°</span>
-  //     </div>
-  // </div>`;
-
-  //   forecastHTML += `<div class="col-2">
-  //     <div class="forecast-day">Thu</div>
-  //     <img
-  //       src="https://openweathermap.org/img/wn/02d@2x.png"
-  //       alt=""
-  //       width="36"
-  //     />
-  //     <div class="forecast-temperature">
-  //       <span class="forecast-temerature-day">28°</span>
-  //       <span class="forecast-temerature-night">18°</span>
-  //     </div>
-  // </div>`;
-
   forecastHTML += `<\div>`;
   forecast.innerHTML = forecastHTML;
+}
+
+function getForecast(lat, lon) {
+  let apiKey = "616b6d14eb70524f242eb75242106f0a";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+  axios.get(apiUrl).then(showForecast);
 }
 
 let form = document.querySelector("#search-form");
@@ -139,4 +122,3 @@ let celciusLink = document.querySelector("#celcius-link");
 celciusLink.addEventListener("click", convertToCelcius);
 
 search("Sumy");
-showForecast();
